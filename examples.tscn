@@ -1,0 +1,289 @@
+[gd_scene load_steps=30 format=2]
+
+[ext_resource path="res://shaders/burn.tres" type="Shader" id=1]
+[ext_resource path="res://shaders/crack.tres" type="Shader" id=2]
+[ext_resource path="res://shaders/sand.tres" type="Shader" id=3]
+[ext_resource path="res://shaders/undertale.tres" type="Shader" id=4]
+[ext_resource path="res://disintegration.gd" type="Script" id=5]
+[ext_resource path="res://assets/godot_icon_white.png" type="Texture" id=6]
+[ext_resource path="res://shaders/undertale_lines.tres" type="Shader" id=7]
+[ext_resource path="res://assets/godot_icon_parchment.png" type="Texture" id=8]
+[ext_resource path="res://assets/godot_icon_color.png" type="Texture" id=9]
+[ext_resource path="res://assets/spreadnoise.png" type="Texture" id=10]
+
+[sub_resource type="Gradient" id=10]
+offsets = PoolRealArray( 0, 0.0255474, 0.0583942, 0.10219 )
+colors = PoolColorArray( 1, 0.141176, 0, 1, 0.0654297, 0.0273665, 0.00153351, 1, 0.213867, 0.0964909, 0, 1, 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=11]
+gradient = SubResource( 10 )
+
+[sub_resource type="Gradient" id=16]
+offsets = PoolRealArray( 0, 0.0654545, 0.112727, 0.156364, 0.669091, 0.981818, 1 )
+colors = PoolColorArray( 0, 0, 0, 1, 1, 0.28125, 0, 1, 1, 0.962646, 0.402344, 0.990493, 1, 0.141176, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0 )
+
+[sub_resource type="GradientTexture" id=15]
+gradient = SubResource( 16 )
+
+[sub_resource type="OpenSimplexNoise" id=12]
+
+[sub_resource type="NoiseTexture" id=13]
+noise = SubResource( 12 )
+
+[sub_resource type="ShaderMaterial" id=1]
+shader = ExtResource( 1 )
+shader_param/direction = Vector3( 0, -1, 0 )
+shader_param/spread = 75.0
+shader_param/flatness = null
+shader_param/initial_linear_velocity = 10.0
+shader_param/initial_angle = null
+shader_param/angular_velocity = null
+shader_param/orbit_velocity = null
+shader_param/linear_accel = 20.0
+shader_param/radial_accel = null
+shader_param/tangent_accel = null
+shader_param/damping = null
+shader_param/scale = 1.0
+shader_param/hue_variation = 0.02
+shader_param/anim_speed = null
+shader_param/anim_offset = null
+shader_param/initial_linear_velocity_random = 1.0
+shader_param/initial_angle_random = 1.0
+shader_param/angular_velocity_random = null
+shader_param/orbit_velocity_random = null
+shader_param/linear_accel_random = null
+shader_param/radial_accel_random = null
+shader_param/tangent_accel_random = null
+shader_param/damping_random = null
+shader_param/scale_random = null
+shader_param/hue_variation_random = 1.0
+shader_param/anim_speed_random = null
+shader_param/anim_offset_random = null
+shader_param/lifetime_randomness = 0.8
+shader_param/trail_divisor = 1
+shader_param/gravity = null
+shader_param/progress = 0.5
+shader_param/particle_lifetime_fraction = 0.3
+shader_param/color_ramp = SubResource( 15 )
+shader_param/burn_ramp = SubResource( 11 )
+shader_param/sprite = ExtResource( 8 )
+shader_param/noise = SubResource( 13 )
+
+[sub_resource type="Gradient" id=19]
+offsets = PoolRealArray( 0, 0.0437956, 1 )
+colors = PoolColorArray( 1, 1, 1, 0.889313, 0, 1, 0.970703, 1, 0.894118, 1, 0.996078, 0 )
+
+[sub_resource type="GradientTexture" id=20]
+gradient = SubResource( 19 )
+
+[sub_resource type="Gradient" id=21]
+offsets = PoolRealArray( 0, 0.0364963, 0.0985401 )
+colors = PoolColorArray( 1, 1, 1, 1, 0, 1, 0.90625, 1, 1, 1, 1, 1 )
+
+[sub_resource type="GradientTexture" id=22]
+gradient = SubResource( 21 )
+
+[sub_resource type="ShaderMaterial" id=2]
+shader = ExtResource( 2 )
+shader_param/direction = Vector3( 0, -1, 0 )
+shader_param/spread = 190.0
+shader_param/flatness = null
+shader_param/initial_linear_velocity = 5.0
+shader_param/initial_angle = 0.0
+shader_param/angular_velocity = null
+shader_param/orbit_velocity = null
+shader_param/linear_accel = 1.0
+shader_param/radial_accel = null
+shader_param/tangent_accel = null
+shader_param/damping = null
+shader_param/scale = 1.0
+shader_param/hue_variation = 0.0
+shader_param/anim_speed = null
+shader_param/anim_offset = null
+shader_param/initial_linear_velocity_random = null
+shader_param/initial_angle_random = null
+shader_param/angular_velocity_random = null
+shader_param/orbit_velocity_random = null
+shader_param/linear_accel_random = null
+shader_param/radial_accel_random = null
+shader_param/tangent_accel_random = null
+shader_param/damping_random = null
+shader_param/scale_random = null
+shader_param/hue_variation_random = 0.0
+shader_param/anim_speed_random = null
+shader_param/anim_offset_random = null
+shader_param/lifetime_randomness = 0.3
+shader_param/trail_divisor = 1
+shader_param/gravity = null
+shader_param/progress = 0.5
+shader_param/particle_lifetime_fraction = 0.1
+shader_param/color_ramp = SubResource( 20 )
+shader_param/fade_ramp = SubResource( 22 )
+shader_param/sprite = ExtResource( 9 )
+shader_param/noise = ExtResource( 10 )
+
+[sub_resource type="OpenSimplexNoise" id=17]
+
+[sub_resource type="NoiseTexture" id=18]
+noise = SubResource( 17 )
+
+[sub_resource type="ShaderMaterial" id=3]
+shader = ExtResource( 3 )
+shader_param/direction = null
+shader_param/spread = null
+shader_param/flatness = null
+shader_param/initial_linear_velocity = null
+shader_param/initial_angle = null
+shader_param/angular_velocity = null
+shader_param/orbit_velocity = null
+shader_param/linear_accel = null
+shader_param/radial_accel = null
+shader_param/tangent_accel = null
+shader_param/damping = null
+shader_param/scale = 1.0
+shader_param/hue_variation = null
+shader_param/anim_speed = null
+shader_param/anim_offset = null
+shader_param/initial_linear_velocity_random = null
+shader_param/initial_angle_random = null
+shader_param/angular_velocity_random = null
+shader_param/orbit_velocity_random = null
+shader_param/linear_accel_random = null
+shader_param/radial_accel_random = null
+shader_param/tangent_accel_random = null
+shader_param/damping_random = null
+shader_param/scale_random = null
+shader_param/hue_variation_random = null
+shader_param/anim_speed_random = null
+shader_param/anim_offset_random = null
+shader_param/lifetime_randomness = null
+shader_param/trail_divisor = 1
+shader_param/gravity = Vector3( 0, 100, 0 )
+shader_param/progress = 0.5
+shader_param/particle_lifetime_fraction = 0.5
+shader_param/sprite = ExtResource( 6 )
+shader_param/noise = SubResource( 18 )
+
+[sub_resource type="Gradient" id=6]
+colors = PoolColorArray( 1, 1, 1, 1, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=7]
+gradient = SubResource( 6 )
+
+[sub_resource type="ShaderMaterial" id=4]
+shader = ExtResource( 4 )
+shader_param/direction = Vector3( 0, -1, 0 )
+shader_param/spread = 180.0
+shader_param/flatness = null
+shader_param/initial_linear_velocity = 10.0
+shader_param/initial_angle = null
+shader_param/angular_velocity = null
+shader_param/orbit_velocity = null
+shader_param/linear_accel = null
+shader_param/radial_accel = null
+shader_param/tangent_accel = null
+shader_param/damping = null
+shader_param/scale = 1.0
+shader_param/hue_variation = null
+shader_param/anim_speed = null
+shader_param/anim_offset = null
+shader_param/initial_linear_velocity_random = 0.5
+shader_param/initial_angle_random = null
+shader_param/angular_velocity_random = null
+shader_param/orbit_velocity_random = null
+shader_param/linear_accel_random = null
+shader_param/radial_accel_random = null
+shader_param/tangent_accel_random = null
+shader_param/damping_random = null
+shader_param/scale_random = null
+shader_param/hue_variation_random = null
+shader_param/anim_speed_random = null
+shader_param/anim_offset_random = null
+shader_param/lifetime_randomness = 0.2
+shader_param/trail_divisor = 1
+shader_param/gravity = Vector3( 0, -20, 0 )
+shader_param/progress = 0.5
+shader_param/particle_lifetime_fraction = 0.5
+shader_param/color_ramp = SubResource( 7 )
+shader_param/sprite = ExtResource( 6 )
+
+[sub_resource type="ShaderMaterial" id=23]
+shader = ExtResource( 7 )
+shader_param/direction = Vector3( 0, -1, 0 )
+shader_param/spread = 180.0
+shader_param/flatness = null
+shader_param/initial_linear_velocity = 10.0
+shader_param/initial_angle = null
+shader_param/angular_velocity = null
+shader_param/orbit_velocity = null
+shader_param/linear_accel = null
+shader_param/radial_accel = null
+shader_param/tangent_accel = null
+shader_param/damping = null
+shader_param/scale = 1.0
+shader_param/hue_variation = null
+shader_param/anim_speed = null
+shader_param/anim_offset = null
+shader_param/initial_linear_velocity_random = 0.5
+shader_param/initial_angle_random = null
+shader_param/angular_velocity_random = null
+shader_param/orbit_velocity_random = null
+shader_param/linear_accel_random = null
+shader_param/radial_accel_random = null
+shader_param/tangent_accel_random = null
+shader_param/damping_random = null
+shader_param/scale_random = null
+shader_param/hue_variation_random = null
+shader_param/anim_speed_random = null
+shader_param/anim_offset_random = null
+shader_param/lifetime_randomness = 0.2
+shader_param/trail_divisor = 1
+shader_param/gravity = Vector3( 0, -20, 0 )
+shader_param/progress = 0.5
+shader_param/particle_lifetime_fraction = 0.5
+shader_param/color_ramp = SubResource( 7 )
+shader_param/sprite = ExtResource( 6 )
+
+[node name="Examples" type="Node2D"]
+position = Vector2( 65, 256 )
+scale = Vector2( 2, 2 )
+
+[node name="Burn" type="Particles2D" parent="."]
+amount = 2500
+lifetime = 3.0
+explosiveness = 1.0
+process_material = SubResource( 1 )
+script = ExtResource( 5 )
+
+[node name="Crack" type="Particles2D" parent="."]
+position = Vector2( 100, 0 )
+amount = 2500
+lifetime = 3.0
+explosiveness = 1.0
+process_material = SubResource( 2 )
+script = ExtResource( 5 )
+
+[node name="Sand" type="Particles2D" parent="."]
+self_modulate = Color( 0.521569, 0.521569, 0.521569, 1 )
+position = Vector2( 200, 0 )
+amount = 2500
+lifetime = 3.0
+explosiveness = 1.0
+process_material = SubResource( 3 )
+script = ExtResource( 5 )
+
+[node name="Undertale" type="Particles2D" parent="."]
+position = Vector2( 300, 0 )
+amount = 2500
+lifetime = 3.0
+explosiveness = 1.0
+process_material = SubResource( 4 )
+script = ExtResource( 5 )
+
+[node name="UndertaleLines" type="Particles2D" parent="."]
+position = Vector2( 400, 0 )
+amount = 2500
+lifetime = 3.0
+explosiveness = 1.0
+process_material = SubResource( 23 )
+script = ExtResource( 5 )

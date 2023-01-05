@@ -1,0 +1,106 @@
+[gd_resource type="Shader" format=2]
+
+[resource]
+code = "shader_type particles;
+render_mode disable_velocity;
+
+uniform float progress: hint_range(0.0, 1.0, 0.01) = 0.0;
+uniform float particle_lifetime_fraction = 0.5;
+uniform bool connect_lines = false;
+
+uniform vec3 direction = vec3(0.0, -1.0, 0.0);
+uniform float spread = 45.0;
+uniform float initial_linear_velocity = 40.0;
+uniform float linear_accel = 20.0;
+uniform float initial_linear_velocity_random = 0.4;
+uniform float linear_accel_random = 0.15;
+uniform float lifetime_randomness = 0.2;
+uniform sampler2D color_ramp;
+uniform sampler2D sprite;
+
+float rand_from_seed(inout uint seed) {
+	int k;
+	int s = int(seed);
+	if (s == 0)
+	s = 305420679;
+	k = s / 127773;
+	s = 16807 * (s - k * 127773) - 2836 * k;
+	if (s < 0)
+		s += 2147483647;
+	seed = uint(s);
+	return float(seed % uint(65536)) / 65535.0;
+}
+
+float rand_from_seed_m1_p1(inout uint seed) {
+	return rand_from_seed(seed) * 2.0 - 1.0;
+}
+
+uint hash(uint x) {
+	x = ((x >> uint(16)) ^ x) * uint(73244475);
+	x = ((x >> uint(16)) ^ x) * uint(73244475);
+	x = (x >> uint(16)) ^ x;
+	return x;
+}
+
+void vertex() {
+	uint alt_seed = hash(NUMBER + uint(1) + RANDOM_SEED);
+	uint alt_restart_seed = hash(NUMBER + uint(301184) + RANDOM_SEED);
+	bool restart = false;
+	if (CUSTOM.y > CUSTOM.w) { restart = true; }
+	
+	ivec2 sprite_size = textureSize(sprite, 0);
+	int x = int(NUMBER) % sprite_size.x;
+	int y = (int(NUMBER) / sprite_size.x) % sprite_size.y;
+	ivec2 starting_position = ivec2(x, y);
+	
+	vec4 color_value = texelFetch(sprite, starting_position, 0);
+	if (color_value.a == 0.0) { ACTIVE = false; }
+	COLOR = color_value;
+
+	if ((RESTART || restart)) {
+		CUSTOM.y = 0.0;
+		CUSTOM.w = (1.0 - lifetime_randomness * rand_from_seed(alt_restart_seed));
+		
+		TRANSFORM[3].xy = vec2(starting_position);
+		
+		if (connect_lines) {
+			if (starting_position.x > 0 && color_value == texelFetch(sprite, starting_position - ivec2(1,0), 0)) {
+				ACTIVE = false;
+			}
+
+			int size = 1;
+			while ((starting_position.x + size < sprite_size.x) && texelFetch(sprite, starting_position + ivec2(size,0), 0) == color_value)  {
+				size += 1;
+			}
+			
+			TRANSFORM[0] = vec4(float(size), 0.0, 0.0, 0.0);
+			TRANSFORM[3].x = TRANSFORM[3].x + ((float(size) - 1.0)/2.0);
+		}
+		
+		TRANSFORM = EMISSION_TRANSFORM * TRANSFORM;
+		VELOCITY = vec3(0.0);
+
+		float pi = 3.14159;
+		float degree_to_rad = pi / 180.0;
+		float spread_rad = spread * degree_to_rad;
+		float angle1_rad = rand_from_seed_m1_p1(alt_restart_seed) * spread_rad;
+		angle1_rad += direction.x != 0.0 ? atan(direction.y, direction.x) : sign(direction.y) * (pi / 2.0);
+		vec3 rot = vec3(cos(angle1_rad), sin(angle1_rad), 0.0);
+		VELOCITY = rot * initial_linear_velocity * mix(1.0, rand_from_seed(alt_restart_seed), initial_linear_velocity_random);
+		VELOCITY = (EMISSION_TRANSFORM * vec4(VELOCITY, 0.0)).xyz;
+		
+		
+	} else if (float(starting_position.y) / float(sprite_size.y) < progress) {
+		CUSTOM.y += DELTA / LIFETIME;
+		float tv = clamp(CUSTOM.y / CUSTOM.w / particle_lifetime_fraction, 0.0, 1.0);
+		vec3 force = normalize(VELOCITY) * linear_accel * mix(1.0, rand_from_seed(alt_seed), linear_accel_random);
+		VELOCITY += force * DELTA;
+		COLOR = textureLod(color_ramp, vec2(tv, 0.0), 0.0) * color_value;
+		TRANSFORM[3].xyz += VELOCITY * DELTA;
+	}
+
+	VELOCITY.z = 0.0;
+	TRANSFORM[3].z = 0.0;
+	if (CUSTOM.y > CUSTOM.w) { ACTIVE = false; }
+}
+"
