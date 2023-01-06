@@ -2,6 +2,8 @@
 
 Examples of disintegration effects with godot 2d particle shaders
 
+![examples](effects.gif)
+
 ## Creating a disintegration effect
 
 The following process can be followed to create a similar effect starting from any particles material. The full source code for this example can be found in [undertale.tres](shaders/undertale.tres).
